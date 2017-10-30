@@ -17,6 +17,6 @@ namespace CRUD_Task.DAL.Models
 
         public DateTime EndDate { get; set; }
 
-        public IEnumerable<User> Users { get; set; }
+        public ICollection<UserProject> UserProjects { get; set; }
     }
 }

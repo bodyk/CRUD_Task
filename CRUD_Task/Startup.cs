@@ -1,9 +1,12 @@
 ﻿
+using CRUD_Task.BLL.Interfaces;
+using CRUD_Task.BLL.Services;
 using CRUD_Task.DAL.Implementations;
 using CRUD_Task.DAL.Interfaces;
 using CRUD_Task.DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,16 +25,12 @@ namespace CRUD_Task.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppContext>(opt => opt.UseSqlServer("Server=tcp:wondrmakr.database.windows.net,1433;" +
-                                                                      "Initial Catalog=WondrMakrApiDb;Persist Security Info=False;" +
-                                                                      "User ID=WondrMakr_admin;Password=AppDbStorage1;" +
-                                                                      "Multiple ActiveResultSets=False;Encrypt=True;" +
-                                                                      "TrustServerCertificat e=False;Connection Timeout=30;"));
+            services.AddDbContext<AppContext>(opt => opt.UseSqlServer(Configuration["Data:ConnectionStrings:DefaultConnectionString"], b=>b.MigrationsAssembly("CRUD_Task.API")));
 
-            services.AddTransient<IUnitOfWork, IUnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-
             services.AddMvc();
         }
 

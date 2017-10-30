@@ -15,6 +15,6 @@ namespace CRUD_Task.DAL.Models
 
         public int Age { get; set; }
 
-        public IEnumerable<Project> Projects { get; set; }
+        public ICollection<UserProject> UserProjects { get; set; }
     }
 }

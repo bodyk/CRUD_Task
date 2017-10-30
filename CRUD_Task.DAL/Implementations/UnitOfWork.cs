@@ -10,15 +10,13 @@ namespace CRUD_Task.DAL.Implementations
     public class UnitOfWork : IUnitOfWork
     {
         private AppContext _context;
-        private IRepositoryFactory _factory;
 
         public IGenericRepository<User> userRepository;
         public IGenericRepository<Project> projectRepository;
 
-        public UnitOfWork(AppContext context, IRepositoryFactory factory)
+        public UnitOfWork(AppContext context)
         {
             this._context = context;
-            this._factory = factory;
         }
 
         private bool disposed = false;
@@ -42,9 +40,9 @@ namespace CRUD_Task.DAL.Implementations
         }
 
         public IGenericRepository<User> UserRepository => userRepository ??
-                                                          (userRepository = _factory.CreateRepository<User>(_context));
+                                                          (userRepository = new GenericRepository<User>(_context));
 
         public IGenericRepository<Project> ProjectRepository => projectRepository ??
-                                                          (projectRepository = _factory.CreateRepository<Project>(_context));
+                                                          (projectRepository = new GenericRepository<Project>(_context));
     }
 }
